@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import {fromEvent} from 'rxjs';
 import {pairwise, switchMap, takeUntil} from 'rxjs/operators';
 import {Platform} from '@ionic/angular';
@@ -15,6 +15,7 @@ interface TouchPosition {
 })
 export class FolderPage implements AfterViewInit {
     @ViewChild('signatureCanvas') public signatureCanvas: ElementRef<HTMLCanvasElement>;
+    base64Content: string;
     private cx: CanvasRenderingContext2D;
 
     constructor(private platform: Platform) {
@@ -24,10 +25,8 @@ export class FolderPage implements AfterViewInit {
     public ngAfterViewInit() {
         const canvasEl: HTMLCanvasElement = this.signatureCanvas.nativeElement;
         this.cx = canvasEl.getContext('2d');
-
-        console.log(this.platform.width(), this.platform.height());
         canvasEl.width = this.platform.width();
-        canvasEl.height = this.platform.height() - 44;
+        canvasEl.height = this.platform.height() * 0.8;
 
         this.cx.lineWidth = 3;
         this.cx.lineCap = 'round';
@@ -37,8 +36,14 @@ export class FolderPage implements AfterViewInit {
     }
 
     saveImage() {
-        const dataURL = this.signatureCanvas.nativeElement.toDataURL();
-        console.log(dataURL);
+        this.base64Content = this.signatureCanvas.nativeElement.toDataURL();
+        console.log(this.base64Content);
+    }
+
+    clearSignature() {
+        const canvasEl: HTMLCanvasElement = this.signatureCanvas.nativeElement;
+        this.cx.clearRect(0, 0, canvasEl.width, canvasEl.height);
+        this.base64Content = '';
     }
 
     private captureEvents(canvasEl: HTMLCanvasElement) {
