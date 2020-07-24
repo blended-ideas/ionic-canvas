@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 
 import {Platform} from '@ionic/angular';
 import {SplashScreen} from '@ionic-native/splash-screen/ngx';
@@ -23,8 +23,17 @@ export class AppComponent implements AfterViewInit {
     private cx: CanvasRenderingContext2D;
     private canvasEl: HTMLCanvasElement;
 
-    constructor(private platform: Platform) {
+    constructor(private platform: Platform,
+                private splashScreen: SplashScreen,
+                private statusBar: StatusBar) {
+        this.initializeApp();
+    }
 
+    initializeApp() {
+        this.platform.ready().then(() => {
+            this.statusBar.styleDefault();
+            this.splashScreen.hide();
+        });
     }
 
     public ngAfterViewInit() {
