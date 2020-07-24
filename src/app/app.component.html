@@ -1,5 +1,23 @@
 <ion-app>
-    <ion-split-pane contentId="main-content">
-        <ion-router-outlet id="main-content"></ion-router-outlet>
-    </ion-split-pane>
+    <ion-header [translucent]="true">
+        <ion-toolbar>
+            <ion-title>Canvas Signature Pad</ion-title>
+        </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+        <div class="canvasWrapper" style="background: white; height: 100%">
+            <canvas #signatureCanvas style="border:1px solid #000000;">
+            </canvas>
+        </div>
+    </ion-content>
+
+    <ion-footer>
+        <ion-button (click)="clearSignature()" color="danger">
+            Clear
+        </ion-button>
+        <ion-button (click)="saveImage()" color="primary">
+            Save
+        </ion-button>
+    </ion-footer>
 </ion-app>
